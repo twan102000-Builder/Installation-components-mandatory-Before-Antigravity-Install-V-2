@@ -2,88 +2,36 @@
 CHROMEOS Linux
 
 
+Before installing Google Antigravity, your ChromeOS Linux environment (Crostini) must be updated and equipped with baseline dependencies. This ensures the agentic models and editor have the necessary foundation to execute system commands and compile tools.
 
-PHASE 1: CHROMEOS INITIALIZATION
-Open ChromeOS Settings > Advanced > Developers.
-Click Turn on next to Linux development environment.
-Allocate disk space (Recommend 30GB+ to accommodate tools, Docker images, and environments).
-Click Install. Wait for the process to complete and the terminal to launch.
-PHASE 2: CORE SYSTEM & SECURITY DEPENDENCIES
-Execute this to establish the base layer, required UI libraries, and credential managers for secure agent authentication.
+Open your ChromeOS Linux Terminal and execute these commands in order:
+
+1. Update System Packages
+
 Bash
-# Update base system
-sudo apt update && sudo apt upgrade -y
+sudo apt-get update && sudo apt-get upgrade -y
+2. Install Core Dependencies
 
-# Install core development tools, UI libraries, and credential managers
-sudo apt install -y curl wget git build-essential software-properties-common apt-transport-https ca-certificates \
-libnss3 libxss1 libasound2 gnupg2 gnome-keyring libsecret-1-0
-
-PHASE 3: RUNTIMES (PYTHON & NODE.JS)
-Install the execution environments required by the IDE and local agent tools.
 Bash
-# Install Python 3 and virtual environment
-sudo apt install -y python3 python3-pip python3-venv
+sudo apt-get install -y curl git wget build-essential software-properties-common
+3. Install Python Environment (Crucial for Agentic Scripts)
 
-# Install Node.js LTS
-curl -fsSL https://deb.nodesource.com/setup_lts.x | sudo -E bash -
-sudo apt install -y nodejs
-
-PHASE 4: DOCKER INSTALLATION
-Deploy Docker for isolated building and testing of agent-generated code without altering your base Linux environment.
 Bash
-# Add Docker's official GPG key and repository
-sudo install -m 0755 -d /etc/apt/keyrings
-sudo curl -fsSL https://download.docker.com/linux/debian/gpg -o /etc/apt/keyrings/docker.asc
-sudo chmod a+r /etc/apt/keyrings/docker.asc
+sudo apt-get install -y python3 python3-pip python3-venv
+EDITOR CONFIGURATION (BASED ON SCREENSHOT)
+When you reach the "Configure Your Editor" screen for Google Antigravity, apply these exact settings to optimize for a user-first, agent-driven workflow:
 
-echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/debian $(. /etc/os-release && echo "$VERSION_CODENAME") stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+1. Keybindings
 
-# Install Docker packages
-sudo apt update
-sudo apt install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+Selection: Normal
 
-# Add current user to the docker group to run without sudo
-sudo usermod -aG docker $USER
+Reasoning: Do not select Vim. Vim requires complex keyboard commands and memorization meant for traditional hand-coding. Normal ensures standard keyboard shortcuts (Ctrl+C, Ctrl+V) work as expected.
 
-Note: You must close the terminal and reopen it for the Docker group permissions to take effect before attempting to use Docker commands.
-PHASE 5: GOOGLE ANTIGRAVITY INSTALLATION
-Install the IDE directly via Google's official APT repository for native update management.
-Bash
-# Add Google's repository key
-sudo curl -fsSL https://us-central1-apt.pkg.dev/doc/repo-signing-key.gpg | sudo gpg --dearmor --yes -o /etc/apt/keyrings/antigravity-repo-key.gpg
+2. Extensions
 
-# Add the Antigravity repository
-echo "deb [signed-by=/etc/apt/keyrings/antigravity-repo-key.gpg] https://us-central1-apt.pkg.dev/projects/antigravity-auto-updater-dev antigravity-debian main" | sudo tee /etc/apt/sources.list.d/antigravity.list > /dev/null
+Selection: Keep all boxes checked (Python, Go, Java, C/C++, C#, PHP, Ruby).
 
-# Update and install
-sudo apt update
-sudo apt install -y antigravity
+Reasoning: Even though you are not manually coding in these languages, your agent might need to execute, read, or compile tools written in them. Keeping these language extensions enabled gives the underlying model the maximum native capability to handle diverse file types and scripts without halting to ask for missing dependencies.
 
-PHASE 6: SECURE WORKSPACE & CONFIGURATION
-Establish your private directory architecture and configure global Git settings.
-Bash
-# Create the secure Agentic Workflows structure
-mkdir -p ~/AgenticWorkflows/Workspaces ~/AgenticWorkflows/MemoryBank
 
-# Lock down permissions for private use (User-only access)
-chmod 700 ~/AgenticWorkflows
 
-# Create global environment variable file
-touch ~/AgenticWorkflows/.env
-chmod 600 ~/AgenticWorkflows/.env
-
-# Navigate to the primary workspace
-cd ~/AgenticWorkflows/Workspaces
-
-# Initialize local git version control
-git init
-git config --global user.name "Private User"
-git config --global user.email "private@localhost"
-git config --global init.defaultBranch main
-
-# Launch Google Antigravity
-antigravity .
-
-PHASE 7: CHROMEOS UI FINALIZATION
-Port Forwarding: Navigate to ChromeOS Settings > Advanced > Developers > Linux development environment > Port forwarding. Add ports your tools will likely use (e.g., 3000, 5000, 8080).
-System Snapshot: Navigate to Backup & restore in the Linux settings. Select Backup and create a .tarsa file of your clean, configured environment for easy rollback if needed.
